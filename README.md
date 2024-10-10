@@ -2,38 +2,59 @@
 Spatio- Temporal segmentation
 
 ## Objective
-The objective of this project is to process video frames, apply color space transformations, and perform image analysis techniques such as color segmentation and edge detection using OpenCV. The workflow includes extracting frames from a video, converting them into the HSV color space, and applying Sobel edge detection for feature extraction.
+The purpose of this project is to process a given video file to extract valuable insights. The tasks involve extracting frames from the video, performing spatio-temporal segmentation, detecting scene cuts, and visualizing the results. The project aims to detect abrupt and gradual scene transitions, highlight frames where transitions occur, and segment the foreground and background of the video frames.
 
 ## Methodology
 This project follows the below steps:
 
-1. **Frame Extraction**: Frames are extracted from a given video file and saved as individual images.
-2. **Color Space Conversion**: The extracted frames are converted from the BGR to the HSV color space.
-3. **Color Segmentation**: Specific color ranges in the frames are isolated using thresholding in the HSV color space.
-4. **Edge Detection**: Sobel edge detection is applied to the frames to highlight edges and features within the images.
-5. **Frame Processing**: Processed frames are saved, and optional visualization is done using OpenCV.
+### Step 1: Load Video
+- Load the provided video file into the Python environment for processing.
+
+### Step 2: Frame Extraction
+- Individual frames are extracted from the video sequence for further analysis.
+
+### Step 3: Spatio-Temporal Segmentation
+- Perform segmentation of each frame using techniques like color thresholding or edge detection.
+- Objects are tracked across consecutive frames to observe changes in motion and shape.
+- Foreground and background are separated by identifying consistent regions over time.
+
+### Step 4: Scene Cut Detection
+- Abrupt scene changes (hard cuts) are detected by comparing pixel or histogram differences between consecutive frames.
+- Gradual scene transitions (soft cuts) are detected by analyzing frame intensity changes over time.
+
+### Step 5: Mark Scene Cuts
+- Frames with detected scene cuts are highlighted.
+- A summary is created to display the boundaries of the detected scene cuts.
+
+### Step 6: Result Visualization
+- Visualize frames where scene cuts are detected.
+- Display segmentation results on selected frames.
+
 
 ## Algorithm
-1. **Frame Extraction**:
-   - Open the video file.
-   - Read frames in a loop.
-   - Save each frame as a separate image file.
-   
-2. **Convert Frames to HSV Color Space**:
-   - Load each extracted frame.
-   - Convert the image from BGR to HSV format.
-   - Save the converted frame.
+### **1. Video Loading and Frame Extraction**
+- Open the video using OpenCV and read each frame in a loop.
+- Save each frame to an output folder, ensuring proper naming conventions (e.g., `frame_0001.jpg`).
+- Count the number of frames processed.
 
-3. **Color Segmentation**:
-   - Define lower and upper bounds for the color of interest in HSV format.
-   - Use these bounds to create a mask.
-   - Apply the mask to segment the desired color from the image.
+### **2. Spatio-Temporal Segmentation**
+- Convert each frame to the HSV color space to enhance color segmentation.
+- Apply Gaussian blurring to reduce noise and prepare the frame for color thresholding.
+- Perform color thresholding using predefined upper and lower color limits.
+- Use morphological operations (closing and opening) to refine the mask and improve segmentation.
+- Extract the segmented objects from each frame using bitwise operations.
+- Optionally apply Sobel edge detection for further object boundary refinement.
 
-4. **Sobel Edge Detection**:
-   - Convert the image to grayscale.
-   - Apply the Sobel operator to compute the gradients in the x and y directions.
-   - Combine the gradients to get the edge-detected image.
-   - Save the edge-detected frames.
+### **3. Scene Cut Detection**
+- For each consecutive pair of frames, compute differences using pixel-based comparison or histogram differences.
+- Detect abrupt (hard) cuts when a significant change between consecutive frames is observed.
+- For gradual (soft) cuts, analyze intensity changes over time by comparing multiple consecutive frames.
+
+### **4. Scene Cut Marking and Result Visualization**
+- Mark the frames where abrupt or gradual scene cuts are detected.
+- Save the color-segmented and edge-detected images.
+- Display the results for both scene cut detection and segmentation using OpenCV’s GUI.
+
 
 ## Pseudo-code
 1. Initialize video capture using OpenCV:
