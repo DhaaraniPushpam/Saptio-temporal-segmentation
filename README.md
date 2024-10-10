@@ -1,62 +1,91 @@
 # 21MIA1052_IVA_LAB_4
 Spatio- Temporal segmentation
+
 ## Objective
-This project aims to perform video processing tasks such as frame extraction, segmentation, and object tracking. The video used in this case study is "Donut (15-Second Ad).mp4."
+The objective of this project is to process video frames, apply color space transformations, and perform image analysis techniques such as color segmentation and edge detection using OpenCV. The workflow includes extracting frames from a video, converting them into the HSV color space, and applying Sobel edge detection for feature extraction.
 
 ## Methodology
-1. **Frame Extraction**: Extract individual frames from the video.
-2. **Segmentation**: Perform color-based segmentation to isolate specific elements in each frame.
-3. **Object Tracking**: Track movement in the video based on detected objects.
+This project follows the below steps:
 
-## Algorithm / Pseudocode
-### Frame Extraction
-- Open the video file.
-- Loop through the video frames and save each one as an image.
+1. **Frame Extraction**: Frames are extracted from a given video file and saved as individual images.
+2. **Color Space Conversion**: The extracted frames are converted from the BGR to the HSV color space.
+3. **Color Segmentation**: Specific color ranges in the frames are isolated using thresholding in the HSV color space.
+4. **Edge Detection**: Sobel edge detection is applied to the frames to highlight edges and features within the images.
+5. **Frame Processing**: Processed frames are saved, and optional visualization is done using OpenCV.
+
+## Algorithm
+1. **Frame Extraction**:
+   - Open the video file.
+   - Read frames in a loop.
+   - Save each frame as a separate image file.
+   
+2. **Convert Frames to HSV Color Space**:
+   - Load each extracted frame.
+   - Convert the image from BGR to HSV format.
+   - Save the converted frame.
+
+3. **Color Segmentation**:
+   - Define lower and upper bounds for the color of interest in HSV format.
+   - Use these bounds to create a mask.
+   - Apply the mask to segment the desired color from the image.
+
+4. **Sobel Edge Detection**:
+   - Convert the image to grayscale.
+   - Apply the Sobel operator to compute the gradients in the x and y directions.
+   - Combine the gradients to get the edge-detected image.
+   - Save the edge-detected frames.
+
+## Pseudo-code
+
 ```python
-cap = cv2.VideoCapture(video_path)
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-    cv2.imwrite(output_path, frame)
-cap.release()
+# Pseudo-code for frame extraction
+def extract_frames(video_path):
+    video_capture = cv2.VideoCapture(video_path)
+    frame_count = 0
+    while True:
+        success, frame = video_capture.read()
+        if not success:
+            break
+        cv2.imwrite(f"frame_{frame_count}.jpg", frame)
+        frame_count += 1
+
+# Pseudo-code for color segmentation
+def color_segmentation(frame, lower_bound, upper_bound):
+    hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv_frame, lower_bound, upper_bound)
+    result = cv2.bitwise_and(frame, frame, mask=mask)
+    return result
+
+# Pseudo-code for Sobel edge detection
+def sobel_edge_detection(frame):
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    sobel_x = cv2.Sobel(gray_frame, cv2.CV_64F, 1, 0, ksize=3)
+    sobel_y = cv2.Sobel(gray_frame, cv2.CV_64F, 0, 1, ksize=3)
+    edges = cv2.magnitude(sobel_x, sobel_y)
+    return cv2.convertScaleAbs(edges)
 ```
 
-### Segmentation
-- Convert frames to HSV color space.
-- Apply Gaussian blur and mask the color range for segmentation.
-```python
-hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-mask = cv2.inRange(hsv_frame, lower_color, upper_color)
-```
+## Dependencies
+To run the code in this project, the following Python packages are required:
 
-### Object Tracking
-- Detect objects and track centroids across frames.
-- Draw lines to visualize the tracking.
-```python
-for i, centroid in enumerate(centroids):
-    cv2.line(frame, previous_centroids[i], centroid, (255, 0, 0), 2)
+- `opencv-python`
+- `numpy`
+- `matplotlib`
+- `scikit-image`
+
+To install these dependencies, use the following command:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Inference
-- **Frame Extraction**: Successfully extracted 360 frames from the video.
-- **Segmentation**: Processed 360 frames, detecting objects based on HSV color space.
-- **Object Tracking**: Tracked objects throughout the video, and results were displayed in real-time.
+- The project demonstrates the use of basic video processing and computer vision techniques.
+- Color segmentation and edge detection provide insightful ways to analyze and understand the contents of each video frame.
+- The use of HSV color space allows for better segmentation of colors as compared to the RGB color space.
 
 ## Output
-- Extracted frames are saved in the `output/extracted_frames` directory.
-- Processed video showing segmentation and object tracking is displayed during runtime.
+- Extracted video frames saved as images.
+- Color-segmented frames highlighting specific color ranges.
+- Edge-detected frames using Sobel operators.
 
-## Setup
-Install the required libraries:
-```bash
-pip install opencv-python numpy matplotlib
-```
-
-## Usage
-1. Place the video in the `data/` folder.
-2. Run the notebook or Python scripts:
-   ```bash
-   jupyter notebook src/main.ipynb
-   ```
-3. The extracted frames will be saved in the `output/` folder.
