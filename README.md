@@ -88,4 +88,7 @@ pip install -r requirements.txt
 - Extracted video frames saved as images.
 - Color-segmented frames highlighting specific color ranges.
 - Edge-detected frames using Sobel operators.
+- You can download the extracted output frames from the video from this [Google Drive link](https://drive.google.com/drive/folders/1WLwdKBHwSGD9XkYP03YTPoJfzh9l8ja7?usp=sharing).
+
+
 
