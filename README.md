@@ -1,6 +1,4 @@
-##Spatio- Temporal segmentation
-
-## Objective
+## Spatio- Temporal segmentation
 The purpose of this project is to process a given video file to extract valuable insights. The tasks involve extracting frames from the video, performing spatio-temporal segmentation, detecting scene cuts, and visualizing the results. The project aims to detect abrupt and gradual scene transitions, highlight frames where transitions occur, and segment the foreground and background of the video frames.
 
 ## Methodology
